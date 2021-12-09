@@ -52,24 +52,50 @@ const getUserIP = () => {
 
 // Say Hello in Native Language
 const sayHello = (userIP) => {
-  return fetch(`https://fourtonfish.com/hellosalut/?ip=${userIP}`, {})
+  /**
+   * Cors was affecting your fetch. the response.status was not returning 200 due to cors
+   * Read up on it and if you're still confused, ask me
+   */
+  return fetch(`https://fourtonfish.com/hellosalut/?ip=${userIP}`, {
+    mode: "cors",
+  })
     .then((response) => {
+      console.log(response);
       if (response.status === 200) {
         return response.json();
       }
+      /**From Daniel
+       * You need to do something in the event the response.status is not 200
+       * its just an observation not the reason your code didn;t work
+       */
+      throw new Error("Whatever error");
     })
     .then((data) => {
+      console.log(data);
       return data.hello;
+    })
+    .catch((err) => {
+      // Whatever is thrown can be caught here
+      console.log(err);
     });
 };
 
+/**
+ * From Daniel
+ * I made the function async so you could await the promise returned from getUserIP
+ * it was showing pending because you didn't resolve the promise returned from getUserIP
+ * you could've have resolved it by calling .then or async & await
+ * To support your coding logic/flow. async & await is best suited for this case
+ *
+ */
+
 // Open Display Container
-const openDisplay = () => {
+const openDisplay = async () => {
   // Get Users name
   const user = username.value;
 
   // Retrieve User IP address
-  let IPaddress = getUserIP();
+  let IPaddress = await getUserIP();
 
   // Get Hello message
   let message = sayHello(IPaddress);
@@ -83,6 +109,11 @@ const openDisplay = () => {
 
 form.addEventListener("submit", (e) => {
   e.preventDefault();
+
+  console.log(
+    patterns[password.attributes.name.value],
+    patterns[username.attributes.name.value]
+  );
 
   engine(
     username,
