@@ -60,7 +60,6 @@ const sayHello = (userIP) => {
     mode: "cors",
   })
     .then((response) => {
-      console.log(response);
       if (response.status === 200) {
         return response.json();
       }
@@ -71,7 +70,6 @@ const sayHello = (userIP) => {
       throw new Error("Whatever error");
     })
     .then((data) => {
-      console.log(data);
       return data.hello;
     })
     .catch((err) => {
@@ -95,16 +93,12 @@ const openDisplay = async () => {
   const user = username.value;
 
   // Retrieve User IP address
-  let IPaddress = await getUserIP();
-
-  // Get Hello message
-  let message = sayHello(IPaddress);
-  console.log(message);
-  // Display username
-  // displayUserName.innerHTML = `${message} ${user}`;
-
-  // Open display block
-  clip__container.classList.add("show");
+  getUserIP().then((IPaddress) => {
+    sayHello(IPaddress).then((message) => {
+      console.log({ message });
+      clip__container.classList.add("show");
+    });
+  });
 };
 
 form.addEventListener("submit", (e) => {
