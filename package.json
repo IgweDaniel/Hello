@@ -1,0 +1,20 @@
+{
+  "name": "hello",
+  "version": "1.0.0",
+  "description": "Hello in your native language",
+  "main": "main.js",
+  "scripts": {
+    "sass": "node-sass -w scss/ -o dist/css/ --recursive"
+  },
+  "keywords": [
+    "Hello",
+    "Language",
+    "IP",
+    "address"
+  ],
+  "author": "Charles Grandison",
+  "license": "MIT",
+  "dependencies": {
+    "node-sass": "^6.0.1"
+  }
+}
